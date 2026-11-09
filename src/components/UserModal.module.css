@@ -162,7 +162,7 @@
   font: inherit;
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: var(--accent-contrast);
   background: var(--accent);
   border: none;
   border-radius: 10px;
