@@ -5,6 +5,6 @@ export interface User  {
     email: string;
     phone: string;
     company: { name: string };
-    adress: { city: string };
+    address: { city: string };
     
 }
