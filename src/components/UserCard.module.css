@@ -36,10 +36,19 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--accent-bg);
-  color: var(--accent);
+  /* --avatar-hue vem do componente: cada usuário tem uma cor fixa */
+  background: hsl(var(--avatar-hue, 275) 80% 55% / 0.15);
+  color: hsl(var(--avatar-hue, 275) 65% 38%);
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .avatar {
+    background: hsl(var(--avatar-hue, 275) 70% 60% / 0.2);
+    color: hsl(var(--avatar-hue, 275) 80% 75%);
+  }
 }
 
 .info {
