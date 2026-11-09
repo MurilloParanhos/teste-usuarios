@@ -4,6 +4,7 @@ import { buscarUsuarios } from './services/api';
 import { UserList } from './components/UserList';
 import { SearchBar } from './components/SearchBar';
 import { UserModal } from './components/UserModal';
+import { UserListSkeleton } from './components/UserListSkeleton';
 import styles from './App.module.css';
 
 function App() {
@@ -22,9 +23,11 @@ function App() {
 
   if (loading)
     return (
-      <div className={styles.status} role="status">
-        <span className={styles.spinner} aria-hidden="true" />
-        <p>Carregando...</p>
+      <div className={styles.app}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>Usuários</h1>
+        </header>
+        <UserListSkeleton />
       </div>
     );
   if (error)
