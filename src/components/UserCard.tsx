@@ -5,9 +5,29 @@ import styles from './UserCard.module.css';
 interface Props {
   user: User;
   onClick: (user: User) => void;
+  highlight?: string;
 }
 
-export function UserCard({ user, onClick }: Props) {
+// Envolve em <mark> o trecho do texto que corresponde ao termo buscado.
+// Usa a mesma regra do filtro (sem diferenciar maiúsculas de minúsculas).
+function highlightMatch(text: string, term: string) {
+  if (!term) return text;
+
+  const index = text.toLowerCase().indexOf(term.toLowerCase());
+  if (index === -1) return text;
+
+  return (
+    <>
+      {text.slice(0, index)}
+      <mark className={styles.highlight}>
+        {text.slice(index, index + term.length)}
+      </mark>
+      {text.slice(index + term.length)}
+    </>
+  );
+}
+
+export function UserCard({ user, onClick, highlight = '' }: Props) {
   function handleKeyDown(e: KeyboardEvent<HTMLLIElement>) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -28,7 +48,9 @@ export function UserCard({ user, onClick }: Props) {
         {user.name.charAt(0)}
       </span>
       <div className={styles.info}>
-        <strong className={styles.name}>{user.name}</strong>
+        <strong className={styles.name}>
+          {highlightMatch(user.name, highlight)}
+        </strong>
         <p className={styles.email}>{user.email}</p>
       </div>
     </li>

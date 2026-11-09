@@ -5,9 +5,10 @@ import styles from './UserList.module.css';
 interface Props {
   users: User[];
   onSelect: (user: User) => void;
+  search?: string;
 }
 
-export function UserList({ users, onSelect }: Props) {
+export function UserList({ users, onSelect, search = '' }: Props) {
   if (users.length === 0) {
     return <p className={styles.empty}>Nenhum usuário encontrado.</p>;
   }
@@ -15,7 +16,12 @@ export function UserList({ users, onSelect }: Props) {
   return (
     <ul className={styles.list}>
       {users.map((user) => (
-        <UserCard key={user.id} user={user} onClick={onSelect} />
+        <UserCard
+          key={user.id}
+          user={user}
+          onClick={onSelect}
+          highlight={search}
+        />
       ))}
     </ul>
   );

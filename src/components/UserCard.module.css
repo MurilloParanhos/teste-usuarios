@@ -56,6 +56,14 @@
   text-overflow: ellipsis;
 }
 
+.highlight {
+  padding: 0 1px;
+  color: inherit;
+  background: var(--accent-bg);
+  border-radius: 3px;
+  box-shadow: inset 0 -2px 0 var(--accent-border);
+}
+
 .email {
   margin: 2px 0 0;
   font-size: 14px;

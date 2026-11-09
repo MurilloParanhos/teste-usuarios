@@ -50,7 +50,11 @@ function App() {
       <p className={styles.count} aria-live="polite">
         Mostrando {filteredUsers.length} de {users.length} usuários
       </p>
-      <UserList users={filteredUsers} onSelect={setSelectedUser} />
+      <UserList
+        users={filteredUsers}
+        onSelect={setSelectedUser}
+        search={search}
+      />
 
       {selectedUser && (
         <UserModal user={selectedUser} onClose={() => setSelectedUser(null)} />
