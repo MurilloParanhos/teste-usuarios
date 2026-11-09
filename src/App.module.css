@@ -25,6 +25,12 @@
   color: var(--text);
 }
 
+.count {
+  margin: -12px 0 16px;
+  font-size: 14px;
+  color: var(--text);
+}
+
 /* Estados de carregando e erro */
 .status {
   flex: 1;

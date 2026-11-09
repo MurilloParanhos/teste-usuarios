@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import styles from './SearchBar.module.css';
 
 interface Props {
@@ -6,6 +7,13 @@ interface Props {
 }
 
 export function SearchBar({ value, onChange }: Props) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleClear() {
+    onChange('');
+    inputRef.current?.focus();
+  }
+
   return (
     <div className={styles.wrapper}>
       <svg
@@ -22,6 +30,7 @@ export function SearchBar({ value, onChange }: Props) {
         <line x1="21" y1="21" x2="16.65" y2="16.65" />
       </svg>
       <input
+        ref={inputRef}
         className={styles.input}
         type="text"
         placeholder="Buscar pelo nome..."
@@ -29,6 +38,16 @@ export function SearchBar({ value, onChange }: Props) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
+      {value && (
+        <button
+          type="button"
+          className={styles.clear}
+          aria-label="Limpar busca"
+          onClick={handleClear}
+        >
+          ×
+        </button>
+      )}
     </div>
   );
 }

@@ -44,6 +44,9 @@ function App() {
         <h1 className={styles.title}>Usuários</h1>
       </header>
       <SearchBar value={search} onChange={setSearch} />
+      <p className={styles.count} aria-live="polite">
+        Mostrando {filteredUsers.length} de {users.length} usuários
+      </p>
       <UserList users={filteredUsers} onSelect={setSelectedUser} />
 
       {selectedUser && (
