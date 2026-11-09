@@ -1,5 +1,6 @@
 import type { User } from '../types/User';
 import { UserCard } from './UserCard';
+import styles from './UserList.module.css';
 
 interface Props {
   users: User[];
@@ -8,11 +9,11 @@ interface Props {
 
 export function UserList({ users, onSelect }: Props) {
   if (users.length === 0) {
-    return <p>Nenhum usuário encontrado.</p>;
+    return <p className={styles.empty}>Nenhum usuário encontrado.</p>;
   }
 
   return (
-    <ul>
+    <ul className={styles.list}>
       {users.map((user) => (
         <UserCard key={user.id} user={user} onClick={onSelect} />
       ))}

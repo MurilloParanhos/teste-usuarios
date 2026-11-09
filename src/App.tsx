@@ -4,6 +4,7 @@ import { buscarUsuarios } from './services/api';
 import { UserList } from './components/UserList';
 import { SearchBar } from './components/SearchBar';
 import { UserModal } from './components/UserModal';
+import styles from './App.module.css';
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -19,16 +20,29 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Carregando...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading)
+    return (
+      <div className={styles.status} role="status">
+        <span className={styles.spinner} aria-hidden="true" />
+        <p>Carregando...</p>
+      </div>
+    );
+  if (error)
+    return (
+      <div className={styles.status}>
+        <p className={styles.error} role="alert">{error}</p>
+      </div>
+    );
 
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div>
-      <h1>Usuários</h1>
+    <div className={styles.app}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Usuários</h1>
+      </header>
       <SearchBar value={search} onChange={setSearch} />
       <UserList users={filteredUsers} onSelect={setSelectedUser} />
 
