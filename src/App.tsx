@@ -13,13 +13,21 @@ function App() {
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  // Cada nova tentativa muda este número e faz o useEffect buscar de novo.
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     buscarUsuarios()
       .then(setUsers)
       .catch(() => setError('Não foi possível carregar os usuários.'))
       .finally(() => setLoading(false));
-  }, []);
+  }, [attempt]);
+
+  function handleRetry() {
+    setError('');
+    setLoading(true);
+    setAttempt((current) => current + 1);
+  }
 
   if (loading)
     return (
@@ -33,7 +41,12 @@ function App() {
   if (error)
     return (
       <div className={styles.status}>
-        <p className={styles.error} role="alert">{error}</p>
+        <div className={styles.error}>
+          <p role="alert">{error}</p>
+          <button type="button" className={styles.retry} onClick={handleRetry}>
+            Tentar novamente
+          </button>
+        </div>
       </div>
     );
 
