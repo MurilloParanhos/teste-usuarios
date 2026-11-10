@@ -1,10 +1,8 @@
-export interface User  {
-
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    company: { name: string };
-    address: { city: string };
-    
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  company: { name: string };
+  address: { city: string };
 }
