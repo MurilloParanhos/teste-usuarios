@@ -83,6 +83,7 @@ describe('App', () => {
       expect(await screen.findByRole('alert')).toHaveTextContent(
         'Não foi possível carregar os usuários.'
       );
+      expect(screen.getByRole('heading', { name: 'Usuários' })).toBeInTheDocument();
     });
 
     it('busca de novo ao clicar em "Tentar novamente"', async () => {
@@ -118,6 +119,15 @@ describe('App', () => {
 
       const highlight = getCard('Leanne Graham').querySelector('mark');
       expect(highlight).toHaveTextContent('Lea');
+    });
+
+    it('ignora espaços no começo e no fim da busca', async () => {
+      const user = await renderWithUsers();
+
+      await user.type(screen.getByLabelText('Buscar pelo nome'), '  ervin  ');
+
+      expect(getCard('Ervin Howell')).toBeInTheDocument();
+      expect(screen.getByText('Mostrando 1 de 3 usuários')).toBeInTheDocument();
     });
 
     it('mostra uma mensagem quando nenhum usuário corresponde', async () => {
@@ -178,6 +188,24 @@ describe('App', () => {
 
       await user.keyboard('{Escape}');
       expect(card).toHaveFocus();
+    });
+
+    it('mantém o foco dentro do modal ao navegar com Tab', async () => {
+      const user = await renderWithUsers();
+
+      await user.click(getCard('Leanne Graham'));
+      const dialog = screen.getByRole('dialog');
+      const closeButton = within(dialog).getByRole('button', { name: 'Fechar' });
+      const emailLink = within(dialog).getByRole('link', { name: 'Sincere@april.biz' });
+
+      // O foco começa em "Fechar", o último elemento: Tab volta ao primeiro.
+      expect(closeButton).toHaveFocus();
+      await user.tab();
+      expect(emailLink).toHaveFocus();
+
+      // Shift+Tab no primeiro elemento vai para o último.
+      await user.tab({ shift: true });
+      expect(closeButton).toHaveFocus();
     });
   });
 });

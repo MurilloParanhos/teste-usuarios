@@ -62,6 +62,7 @@ function toTelHref(phone: string) {
 }
 
 export function UserModal({ user, onClose }: Props) {
+  const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
 
@@ -80,10 +81,34 @@ export function UserModal({ user, onClose }: Props) {
     };
   }, []);
 
-  // Fecha o modal com a tecla Esc.
+  // Teclado: Esc fecha o modal, e Tab / Shift+Tab circulam só entre os
+  // elementos do modal, sem escapar para a página atrás do fundo escuro.
   useEffect(() => {
     function handleKeyDown(e: globalThis.KeyboardEvent) {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      if (e.key !== 'Tab' || !modalRef.current) return;
+
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])'
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      const focusIsInside = modalRef.current.contains(active);
+
+      if (e.shiftKey && (active === first || !focusIsInside)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (active === last || !focusIsInside)) {
+        e.preventDefault();
+        first.focus();
+      }
     }
 
     document.addEventListener('keydown', handleKeyDown);
@@ -116,6 +141,7 @@ export function UserModal({ user, onClose }: Props) {
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div
+        ref={modalRef}
         className={styles.modal}
         role="dialog"
         aria-modal="true"

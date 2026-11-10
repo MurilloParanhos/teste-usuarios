@@ -29,36 +29,43 @@ function App() {
     setAttempt((current) => current + 1);
   }
 
+  const header = (
+    <header className={styles.header}>
+      <h1 className={styles.title}>Usuários</h1>
+    </header>
+  );
+
   if (loading)
     return (
       <div className={styles.app}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>Usuários</h1>
-        </header>
+        {header}
         <UserListSkeleton />
       </div>
     );
   if (error)
     return (
-      <div className={styles.status}>
-        <div className={styles.error}>
-          <p role="alert">{error}</p>
-          <button type="button" className={styles.retry} onClick={handleRetry}>
-            Tentar novamente
-          </button>
+      <div className={styles.app}>
+        {header}
+        <div className={styles.status}>
+          <div className={styles.error}>
+            <p role="alert">{error}</p>
+            <button type="button" className={styles.retry} onClick={handleRetry}>
+              Tentar novamente
+            </button>
+          </div>
         </div>
       </div>
     );
 
+  // Espaços no começo ou no fim da busca são ignorados (" lea" encontra "Leanne").
+  const searchTerm = search.trim();
   const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(search.toLowerCase())
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className={styles.app}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Usuários</h1>
-      </header>
+      {header}
       <SearchBar value={search} onChange={setSearch} />
       <p className={styles.count} aria-live="polite">
         Mostrando {filteredUsers.length} de {users.length} usuários
@@ -66,7 +73,7 @@ function App() {
       <UserList
         users={filteredUsers}
         onSelect={setSelectedUser}
-        search={search}
+        search={searchTerm}
       />
 
       {selectedUser && (
